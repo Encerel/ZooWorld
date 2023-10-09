@@ -6,14 +6,9 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-    <%=request.getAttribute("name")%>
-</h1>
+
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
 
-<c:forEach var="user" items="${users}">
-    <p>${user}</p>
-</c:forEach>
 </body>
 </html>
