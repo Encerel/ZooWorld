@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -33,6 +34,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "created_at")
     private Date createdAt;
@@ -40,6 +44,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Order> orders;
+
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
     public enum Role {
         USER, ADMIN, GUEST
     }

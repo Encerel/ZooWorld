@@ -8,7 +8,7 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/ZooWorld</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="e96d5770-ba2c-4310-bccf-0b091fa206ca">
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="c20cbcfe-8223-46d2-8a20-0cffc238ed8c">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
