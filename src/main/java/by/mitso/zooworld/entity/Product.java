@@ -38,18 +38,23 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Availability availability;
 
+    @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "order_item",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "product_id")}
     )
-    @ToString.Exclude
     private List<Order> orders;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "products")
-    private List<Cart> cart;
+    @OneToMany(mappedBy = "product")
+    private List<CartItem> cartItems;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems;
+
 
     public enum Availability {
         AVAILABLE,

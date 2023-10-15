@@ -1,9 +1,6 @@
 package by.mitso.zooworld.model.connection;
 
-import by.mitso.zooworld.entity.Cart;
-import by.mitso.zooworld.entity.Order;
-import by.mitso.zooworld.entity.Product;
-import by.mitso.zooworld.entity.User;
+import by.mitso.zooworld.entity.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -20,6 +17,8 @@ public class HibernateSessionFactoryProvider {
             configuration.addAnnotatedClass(Cart.class);
             configuration.addAnnotatedClass(Order.class);
             configuration.addAnnotatedClass(Product.class);
+            configuration.addAnnotatedClass(CartItem.class);
+            configuration.addAnnotatedClass(OrderItem.class);
             return configuration.buildSessionFactory();
         } catch (Throwable e) {
             throw new ExceptionInInitializerError(e);

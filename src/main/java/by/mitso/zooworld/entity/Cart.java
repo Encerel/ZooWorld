@@ -26,16 +26,7 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "cart_item",
-            joinColumns = { @JoinColumn(name = "cart_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")}
-    )
     @ToString.Exclude
-    private List<Product> products;
-
-    @Column(name = "quantity")
-    private int quantity;
-
+    @OneToMany(mappedBy = "cart")
+    private List<CartItem> items;
 }

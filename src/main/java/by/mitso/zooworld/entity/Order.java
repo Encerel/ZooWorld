@@ -1,7 +1,6 @@
 package by.mitso.zooworld.entity;
 
 //import jakarta.persistence.*;
-
 import javax.persistence.*;
 
 import lombok.*;
@@ -40,8 +39,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToMany(mappedBy = "orders")
-    private List<Product> products;
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> items;
 
     public enum OrderStatus {
         PENDING,
