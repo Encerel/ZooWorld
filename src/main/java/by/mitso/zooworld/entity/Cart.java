@@ -1,8 +1,9 @@
 package by.mitso.zooworld.entity;
 
+//import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class Cart {
 
 
@@ -22,10 +23,19 @@ public class Cart {
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", unique = true)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "cart")
+    @ManyToMany
+    @JoinTable(
+            name = "cart_item",
+            joinColumns = { @JoinColumn(name = "cart_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_id")}
+    )
+    @ToString.Exclude
     private List<Product> products;
+
+    @Column(name = "quantity")
+    private int quantity;
 
 }

@@ -1,9 +1,10 @@
 package by.mitso.zooworld.entity;
 
 
+//import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class User {
 
     @Id
@@ -32,6 +33,7 @@ public class User {
     private String email;
 
     @Column(name = "password")
+    @ToString.Exclude
     private String password;
 
     @Column(name = "phone_number")
@@ -46,6 +48,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Order> orders;
 
     @OneToOne(mappedBy = "user")

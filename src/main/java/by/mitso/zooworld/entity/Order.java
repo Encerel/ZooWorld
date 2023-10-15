@@ -1,11 +1,12 @@
 package by.mitso.zooworld.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import lombok.*;
+//import jakarta.persistence.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+
+import lombok.*;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,8 +23,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-
-    @Column(name = "user_id")
+    //
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
@@ -40,13 +40,9 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "products_orders",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")}
-    )
+    @ManyToMany(mappedBy = "orders")
     private List<Product> products;
+
     public enum OrderStatus {
         PENDING,
         COMPLETED,

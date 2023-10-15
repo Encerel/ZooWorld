@@ -1,10 +1,10 @@
 package by.mitso.zooworld.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+//import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
 public class Product {
 
     @Id
@@ -38,12 +38,18 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Availability availability;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "order_item",
+            joinColumns = {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_id")}
+    )
+    @ToString.Exclude
     private List<Order> orders;
 
-    @OneToOne
-    @JoinColumn(name = "cart_id", referencedColumnName = "id")
-    private Cart cart;
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "products")
+    private List<Cart> cart;
 
     public enum Availability {
         AVAILABLE,
