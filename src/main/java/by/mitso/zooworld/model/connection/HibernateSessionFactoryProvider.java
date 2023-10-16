@@ -7,12 +7,11 @@ import org.hibernate.cfg.Configuration;
 public class HibernateSessionFactoryProvider {
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
-
     private static SessionFactory buildSessionFactory() {
 
         try {
             Configuration configuration = new Configuration();
-            configuration.configure();
+            configuration.configure("hibernate.cfg.xml");
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(Cart.class);
             configuration.addAnnotatedClass(Order.class);

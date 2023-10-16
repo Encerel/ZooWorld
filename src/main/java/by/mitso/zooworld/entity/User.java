@@ -1,7 +1,6 @@
 package by.mitso.zooworld.entity;
 
 
-//import jakarta.persistence.*;
 import javax.persistence.*;
 import lombok.*;
 

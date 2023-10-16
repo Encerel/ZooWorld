@@ -41,3 +41,4 @@ build/
 /src/main/webapp/WEB-INF/logs/log.txt
 /src/main/webapp/WEB-INF/logs/
 /logs/
+/src/main/java/Servlet.java

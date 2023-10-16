@@ -2,7 +2,6 @@ package by.mitso.zooworld.entity;
 
 import lombok.*;
 
-//import jakarta.persistence.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
