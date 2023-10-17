@@ -1,6 +1,7 @@
 package by.mitso.zooworld.model.dao.impl;
 
 import by.mitso.zooworld.entity.Cart;
+import by.mitso.zooworld.entity.CartItem;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.exception.DaoException;
 import by.mitso.zooworld.model.connection.HibernateSessionFactoryProvider;
@@ -50,28 +51,34 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public Optional<Cart> findByUser(User user) throws DaoException {
+    public Optional<Cart> findByUser(User user){
 
         Optional<Cart> cart = Optional.empty();
-        Optional<User> userFromDB = Optional.empty();
 
         try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
-            userFromDB = session.createQuery("FROM User u WHERE u.id = :id", User.class)
-                    .setParameter(USER_ID, user.getId())
-                    .uniqueResultOptional();
+            User userFromDB = session.get(User.class, user.getId());
 
-            if (!userFromDB.isPresent()) {
-                throw new DaoException("No user with id = " + user.getId());
-            } else {
-                cart = session.createQuery("FROM Cart c WHERE c.user = :id", Cart.class)
-                        .setParameter(USER_ID, userFromDB.get())
-                        .uniqueResultOptional();
-            }
+            cart = session.createQuery("FROM Cart c WHERE c.user = :id", Cart.class)
+                    .setParameter(USER_ID, userFromDB)
+                    .uniqueResultOptional();
 
 
             session.getTransaction().commit();
         }
         return cart;
+    }
+
+    @Override
+    public boolean deleteCartItem(Cart cart, CartItem item) {
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Cart cartFromDB = session.get(Cart.class, cart.getId());
+            cartFromDB.getItems().remove(item);
+            session.getTransaction().commit();
+            return true;
+        }
+
     }
 }

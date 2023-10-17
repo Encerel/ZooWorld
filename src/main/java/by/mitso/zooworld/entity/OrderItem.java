@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(of = {"order", "product"})
 public class OrderItem implements Serializable {
 
     @Id

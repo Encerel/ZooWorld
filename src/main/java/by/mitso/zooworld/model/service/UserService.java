@@ -10,6 +10,8 @@ public interface UserService {
 
     List<User> findAll();
 
+    Optional<User> findById(long id) throws ServiceException;
+
     List<User> findUsersByFirstName(String firstName) throws ServiceException;
 
     List<User> findUsersByLastName(String lastName) throws ServiceException;

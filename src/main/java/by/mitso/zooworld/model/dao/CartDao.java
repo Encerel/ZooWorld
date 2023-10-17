@@ -1,6 +1,7 @@
 package by.mitso.zooworld.model.dao;
 
 import by.mitso.zooworld.entity.Cart;
+import by.mitso.zooworld.entity.CartItem;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.exception.DaoException;
 
@@ -13,5 +14,7 @@ public interface CartDao {
 
     Optional<Cart> findById(long id);
 
-    Optional<Cart> findByUser(User user) throws DaoException;
+    Optional<Cart> findByUser(User user);
+
+    boolean deleteCartItem(Cart cart, CartItem item);
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(of = {"id"})
 public class User {
 
     @Id

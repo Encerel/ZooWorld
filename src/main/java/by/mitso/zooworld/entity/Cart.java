@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(of = {"id"})
 public class Cart {
 
 
@@ -26,6 +27,6 @@ public class Cart {
     private User user;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
     private List<CartItem> items;
 }

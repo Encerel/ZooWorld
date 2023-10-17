@@ -13,7 +13,7 @@ public interface OrderService {
 
     Optional<Order> findById(long id) throws ServiceException;
 
-    List<Order> findOrdersByUser(User user);
+    List<Order> findOrdersByUser(User user) throws ServiceException;
 
     boolean changeOrderStatus(long id, Order.OrderStatus status) throws ServiceException;
 }

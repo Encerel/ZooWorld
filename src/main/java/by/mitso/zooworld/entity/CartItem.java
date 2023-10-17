@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(of = {"cart", "product"})
 public class CartItem implements Serializable {
 
     @Id

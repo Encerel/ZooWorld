@@ -26,6 +26,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findById(long id) throws ServiceException {
+
+        Optional<User> user = userDao.findById(id);
+
+        if (user.isEmpty()) {
+            throw new ServiceException("No user with id = " + id);
+        }
+        return user;
+    }
+
+    @Override
     public List<User> findUsersByFirstName(String firstName) throws ServiceException {
 
         List<User> users = new ArrayList<>();

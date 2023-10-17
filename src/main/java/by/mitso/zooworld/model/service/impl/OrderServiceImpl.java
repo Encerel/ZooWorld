@@ -5,7 +5,9 @@ import by.mitso.zooworld.entity.Order.OrderStatus;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.exception.ServiceException;
 import by.mitso.zooworld.model.dao.OrderDao;
+import by.mitso.zooworld.model.dao.UserDao;
 import by.mitso.zooworld.model.service.OrderService;
+import by.mitso.zooworld.model.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +15,11 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderDao orderDao;
+    private final UserService userService;
 
-    public OrderServiceImpl(OrderDao orderDao) {
+    public OrderServiceImpl(OrderDao orderDao, UserService userService) {
         this.orderDao = orderDao;
+        this.userService = userService;
     }
 
     @Override
@@ -29,9 +33,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findOrdersByUser(User user){
+    public List<Order> findOrdersByUser(User user) throws ServiceException {
 
-        return orderDao.findOrdersByUser(user);
+        Optional<User> userFromDB = userService.findById(user.getId());
+
+        return orderDao.findOrdersByUser(userFromDB.get());
     }
 
     @Override
