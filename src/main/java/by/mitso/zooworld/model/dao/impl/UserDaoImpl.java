@@ -30,6 +30,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public Optional<User> findById(long id) {
+
+        Optional<User> user = Optional.empty();
+
+        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            user = session.createQuery("FROM User u WHERE u.id = :id", User.class)
+                    .setParameter(USER_ID, id)
+                    .uniqueResultOptional();
+            session.getTransaction().commit();
+        }
+
+        return user;
+    }
+
+    @Override
     public List<User> findUsersByFirstName(String firstName) {
 
         List<User> users = new ArrayList<>();
@@ -131,10 +149,8 @@ public class UserDaoImpl implements UserDao {
 
         try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
-
-            session.createQuery("UPDATE User u SET u.role = :role WHERE u.id = :id")
-                    .setParameter(USER_ID, id)
-                    .setParameter(USER_ROLE, role);
+            User user = session.get(User.class, id);
+            user.setRole(role);
             session.getTransaction().commit();
             return true;
         }

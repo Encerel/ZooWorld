@@ -10,6 +10,8 @@ public interface UserDao {
 
     List<User> findAll();
 
+    Optional<User> findById(long id);
+
     List<User> findUsersByFirstName(String firstName);
 
     List<User> findUsersByLastName(String lastName);
