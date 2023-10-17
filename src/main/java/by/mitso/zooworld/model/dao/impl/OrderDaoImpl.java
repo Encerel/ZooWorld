@@ -63,22 +63,16 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean changeOrderStatus(long id, Order.OrderStatus status) throws DaoException {
+    public boolean changeOrderStatus(long id, Order.OrderStatus status){
 
         try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
 
             session.beginTransaction();
             Order order = session.get(Order.class, id);
+            order.setStatus(status);
+            session.getTransaction().commit();
+            return true;
 
-            if (order != null) {
-                order.setStatus(status);
-                session.update(order);
-                session.getTransaction().commit();
-                return true;
-            }
-
-            throw new DaoException("No order with id = " + id);
         }
-
     }
 }

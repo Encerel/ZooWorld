@@ -3,6 +3,7 @@ package by.mitso.zooworld.entity;
 import javax.persistence.*;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<OrderItem> items;
 

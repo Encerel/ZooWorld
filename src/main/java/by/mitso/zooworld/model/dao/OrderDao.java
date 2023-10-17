@@ -16,6 +16,6 @@ public interface OrderDao {
 
     List<Order> findOrdersByUser(User user);
 
-    boolean changeOrderStatus(long id, OrderStatus status) throws DaoException;
+    boolean changeOrderStatus(long id, OrderStatus status);
 
 }

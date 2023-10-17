@@ -9,7 +9,6 @@ import by.mitso.zooworld.util.Encoder;
 import by.mitso.zooworld.validator.UserValidator;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,7 +123,7 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("No user with id = " + id);
         }
 
-        return userDao.changeUserRole(user.get().getId(), role);
+        return userDao.changeUserRole(id, role);
     }
 
     @Override
