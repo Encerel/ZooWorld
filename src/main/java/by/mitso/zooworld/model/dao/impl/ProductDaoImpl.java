@@ -2,6 +2,8 @@ package by.mitso.zooworld.model.dao.impl;
 
 import by.mitso.zooworld.entity.Product;
 import by.mitso.zooworld.entity.Product.Availability;
+import by.mitso.zooworld.entity.Product.Type;
+import by.mitso.zooworld.entity.Product.Category;
 import by.mitso.zooworld.exception.DaoException;
 import by.mitso.zooworld.model.connection.HibernateSessionFactoryProvider;
 import by.mitso.zooworld.model.dao.ProductDao;
@@ -97,6 +99,36 @@ public class ProductDaoImpl implements ProductDao {
             session.getTransaction().commit();
         }
 
+        return products;
+    }
+
+    @Override
+    public List<Product> findByType(Type type) {
+
+        List<Product> products = new ArrayList<>();
+
+        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            products = session.createQuery("FROM Product p WHERE p.type = :type", Product.class)
+                    .setParameter(PRODUCT_TYPE, type)
+                    .list();
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> findByCategory(Category category) {
+
+        List<Product> products = new ArrayList<>();
+
+        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            products = session.createQuery("FROM Product p WHERE p.category = :category", Product.class)
+                    .setParameter(PRODUCT_CATEGORY, category)
+                    .list();
+        }
         return products;
     }
 }

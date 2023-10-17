@@ -16,6 +16,10 @@ public final class ColumnName {
     public static final String PRODUCT_ID = "id";
     public static final String PRODUCT_NAME = "name";
     public static final String PRODUCT_AVAILABILITY = "availability";
+    public static final String PRODUCT_TYPE = "type";
+    public static final String PRODUCT_CATEGORY = "category";
+
+
 
     public static final String CART_ID = "id";
     private ColumnName() {}

@@ -1,6 +1,8 @@
 package by.mitso.zooworld.model.dao;
 
 import by.mitso.zooworld.entity.Product;
+import by.mitso.zooworld.entity.Product.Type;
+import by.mitso.zooworld.entity.Product.Category;
 import by.mitso.zooworld.entity.Product.Availability;
 import by.mitso.zooworld.exception.DaoException;
 
@@ -18,4 +20,7 @@ public interface ProductDao {
     boolean changeAvailability(long id, Availability availability) throws DaoException;
 
     List<Product> findByAvailability(Availability availability);
+    List<Product> findByType(Type type);
+    List<Product> findByCategory(Category category);
+
 }

@@ -54,10 +54,29 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems;
 
+    @Column(name = "category")
+    private Category category;
+
+    @Column(name = "type")
+    private Type type;
+
 
     public enum Availability {
         AVAILABLE,
         OUT_OF_STOCK,
         BACK_ORDER
+    }
+
+    public enum Category {
+        CATS,
+        DOGS,
+        BIRDS,
+        TURTLES
+    }
+
+    public enum Type {
+        FOOD,
+        TOY,
+        ACCESSORIES
     }
 }
