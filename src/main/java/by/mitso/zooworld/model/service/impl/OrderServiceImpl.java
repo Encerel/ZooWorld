@@ -25,13 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Optional<Order> findById(long id) throws ServiceException {
-        Optional<Order> order = orderDao.findById(id);
-
-        if (order.isEmpty()) {
-            throw new ServiceException("No order with id = " + id);
-        }
-
-        return order;
+        return orderDao.findById(id);
     }
 
     @Override

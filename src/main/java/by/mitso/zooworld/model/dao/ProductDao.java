@@ -17,7 +17,7 @@ public interface ProductDao {
 
     Optional<Product> findByName(String name);
 
-    boolean changeAvailability(long id, Availability availability) throws DaoException;
+    boolean changeAvailability(long id, Availability availability);
 
     List<Product> findByAvailability(Availability availability);
     List<Product> findByType(Type type);

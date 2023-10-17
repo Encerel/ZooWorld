@@ -22,7 +22,7 @@ public class ProductDaoImpl implements ProductDao {
 
         List<Product> products = new ArrayList<>();
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             products = session.createQuery("FROM Product", Product.class).list();
@@ -37,10 +37,10 @@ public class ProductDaoImpl implements ProductDao {
 
         Optional<Product> product = Optional.empty();
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
-            product = session.createQuery("FROM Product p WHERE p.id = :id" , Product.class)
+            product = session.createQuery("FROM Product p WHERE p.id = :id", Product.class)
                     .setParameter(PRODUCT_ID, id)
                     .uniqueResultOptional();
 
@@ -54,10 +54,10 @@ public class ProductDaoImpl implements ProductDao {
     public Optional<Product> findByName(String name) {
         Optional<Product> product = Optional.empty();
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
-            product = session.createQuery("FROM Product p WHERE p.name = :name" , Product.class)
+            product = session.createQuery("FROM Product p WHERE p.name = :name", Product.class)
                     .setParameter(PRODUCT_NAME, name)
                     .uniqueResultOptional();
 
@@ -68,31 +68,28 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean changeAvailability(long id, Availability availability) throws DaoException {
+    public boolean changeAvailability(long id, Availability availability) {
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             Product product = session.get(Product.class, id);
-
-            if (product != null) {
-                product.setAvailability(availability);
-                session.getTransaction().commit();
-                return true;
-            }
+            product.setAvailability(availability);
+            session.getTransaction().commit();
+            return true;
         }
-        throw new DaoException("No products with id = " + id);
     }
+
 
     @Override
     public List<Product> findByAvailability(Availability availability) {
 
         List<Product> products = new ArrayList<>();
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
-            products = session.createQuery("FROM Product p WHERE p.availability = :availability" , Product.class)
+            products = session.createQuery("FROM Product p WHERE p.availability = :availability", Product.class)
                     .setParameter(PRODUCT_AVAILABILITY, availability)
                     .list();
 
@@ -107,7 +104,7 @@ public class ProductDaoImpl implements ProductDao {
 
         List<Product> products = new ArrayList<>();
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             products = session.createQuery("FROM Product p WHERE p.type = :type", Product.class)
@@ -122,7 +119,7 @@ public class ProductDaoImpl implements ProductDao {
 
         List<Product> products = new ArrayList<>();
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             products = session.createQuery("FROM Product p WHERE p.category = :category", Product.class)
