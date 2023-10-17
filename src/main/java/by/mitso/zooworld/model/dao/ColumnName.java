@@ -1,4 +1,4 @@
-package by.mitso.zooworld.model;
+package by.mitso.zooworld.model.dao;
 
 public final class ColumnName {
 
@@ -8,6 +8,10 @@ public final class ColumnName {
     public static final String USER_ROLE = "role";
     public static final String EMAIL = "email";
     public static final String USER_ID = "id";
+
+    public static final String ORDER_ID = "id";
+
+    public static final String ORDER_STATUS = "status";
 
     private ColumnName() {}
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static by.mitso.zooworld.model.ColumnName.*;
+import static by.mitso.zooworld.model.dao.ColumnName.*;
 
 public class UserDaoImpl implements UserDao {
 
@@ -47,7 +47,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findUsersLastName(String lastName) {
+    public List<User> findUsersByLastName(String lastName) {
 
         List<User> users = new ArrayList<>();
 

@@ -12,7 +12,7 @@ public interface UserDao {
 
     List<User> findUsersByFirstName(String firstName);
 
-    List<User> findUsersLastName(String lastName);
+    List<User> findUsersByLastName(String lastName);
 
     List<User> findUsersByRole(Role role);
 

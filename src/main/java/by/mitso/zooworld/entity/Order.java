@@ -39,6 +39,7 @@ public class Order {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order")
+    @ToString.Exclude
     private List<OrderItem> items;
 
     public enum OrderStatus {
