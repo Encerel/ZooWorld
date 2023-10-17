@@ -21,7 +21,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-    //
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
