@@ -8,7 +8,6 @@
 <body>
 
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
-
+<jsp:forward page="controller?command=to_main"/>
 </body>
 </html>
