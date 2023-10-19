@@ -1,5 +1,6 @@
 package by.mitso.zooworld.model.dao.impl;
 
+import by.mitso.zooworld.entity.Cart;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.entity.User.Role;
 import by.mitso.zooworld.model.connection.HibernateSessionFactoryProvider;
@@ -135,9 +136,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean save(User user) {
 
+        Cart cart = Cart.builder()
+                .user(user)
+                .build();
+
         try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
             session.beginTransaction();
             session.save(user);
+            session.save(cart);
             session.getTransaction().commit();
             return true;
         }
