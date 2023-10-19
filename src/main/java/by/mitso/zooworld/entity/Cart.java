@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @EqualsAndHashCode(of = {"id"})
 public class Cart {
 
@@ -24,6 +24,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 
     @ToString.Exclude

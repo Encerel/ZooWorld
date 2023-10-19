@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @EqualsAndHashCode(of = {"id"})
 public class Product {
 
@@ -38,14 +38,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Availability availability;
 
-    @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "order_item",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")}
-    )
-    private List<Order> orders;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "product")
@@ -56,9 +48,11 @@ public class Product {
     private List<OrderItem> orderItems;
 
     @Column(name = "category")
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private Type type;
 
 

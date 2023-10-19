@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
+@ToString
 @EqualsAndHashCode(of = {"order", "product"})
 public class OrderItem implements Serializable {
 
@@ -30,6 +30,6 @@ public class OrderItem implements Serializable {
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "price")
-    private double price;
+    @Column(name = "total_price")
+    private double totalPrice;
 }
