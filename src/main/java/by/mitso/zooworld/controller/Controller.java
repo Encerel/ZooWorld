@@ -17,16 +17,16 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        processRequest(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        processRequest(req, resp);
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String commandFromPage = request.getParameter(ParametersAndAttribute.COMMAND);
+        String commandFromPage = request.getParameter(ParameterAndAttribute.COMMAND);
         Command currentCommand = CommandProvider.defineCommand(commandFromPage);
         Router router = currentCommand.execute(request);
 
