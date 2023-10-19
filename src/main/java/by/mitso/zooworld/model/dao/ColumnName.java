@@ -1,5 +1,7 @@
 package by.mitso.zooworld.model.dao;
 
+import javax.persistence.Parameter;
+
 public final class ColumnName {
 
 
@@ -22,5 +24,7 @@ public final class ColumnName {
 
 
     public static final String CART_ID = "id";
+    public static final String CART_ITEM_ID = "id";
+
     private ColumnName() {}
 }
