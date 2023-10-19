@@ -16,14 +16,18 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.glassfish.jaxb:jaxb-runtime:4.0.2" />
           <element id="library" level="project" name="Maven: org.glassfish.jaxb:jaxb-core:4.0.2" />
-          <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:4.0.0" />
           <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:2.1.1" />
           <element id="library" level="project" name="Maven: org.eclipse.angus:angus-activation:2.0.0" />
           <element id="library" level="project" name="Maven: org.glassfish.jaxb:txw2:4.0.2" />
           <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:4.1.1" />
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.5.4" />
           <element id="library" level="project" name="Maven: org.checkerframework:checker-qual:3.5.0" />
-          <element id="library" level="project" name="Maven: org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1" />
+          <element id="library" level="project" name="Maven: org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0" />
+          <element id="library" level="project" name="Maven: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0" />
+          <element id="library" level="project" name="Maven: jakarta.el:jakarta.el-api:4.0.0" />
+          <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:3.0.0" />
+          <element id="library" level="project" name="Maven: com.sun.activation:jakarta.activation:2.0.0" />
+          <element id="library" level="project" name="Hibernate 5.4.11-5.4.11" />
         </element>
       </element>
       <element id="directory" name="META-INF">
