@@ -17,7 +17,7 @@ public interface CartDao {
 
     Optional<Cart> findByUser(User user);
 
-    List<CartItem> findAllCartItems(Cart cart);
+
 
     boolean addProductToCart(Cart cart, CartItem item);
 
