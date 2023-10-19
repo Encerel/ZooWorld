@@ -6,7 +6,6 @@ import by.mitso.zooworld.entity.Product;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.exception.ServiceException;
 import by.mitso.zooworld.model.dao.CartDao;
-import by.mitso.zooworld.model.dao.UserDao;
 import by.mitso.zooworld.model.service.CartService;
 import by.mitso.zooworld.model.service.ProductService;
 import by.mitso.zooworld.model.service.UserService;
@@ -43,6 +42,16 @@ public class CartServiceImpl implements CartService {
         Optional<User> userFromDB = userService.findById(user.getId());
 
         return cartDao.findByUser(userFromDB.get());
+    }
+
+    @Override
+    public List<CartItem> findAllCartItems(Cart cart) {
+        return cartDao.findAllCartItems(cart);
+    }
+
+    @Override
+    public boolean addProductToCart(Cart cart, CartItem item) {
+        return cartDao.addProductToCart(cart, item);
     }
 
     @Override
