@@ -18,7 +18,7 @@ import java.util.Set;
 public class AccessFilter implements Filter {
     private static final Set<String> ALLOWED_PATH_GUEST = new HashSet<>(
             Arrays.asList("/index.jsp", "/jsp/main.jsp",
-                    "/jsp/signin.jsp", "/jsp/signup.jsp", "/jsp/error.jsp"));
+                    "/jsp/signin.jsp", "/jsp/signup.jsp", "/jsp/error.jsp", "/jsp/products.jsp"));
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
