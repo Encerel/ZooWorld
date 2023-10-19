@@ -20,7 +20,7 @@ public interface UserService {
 
     Optional<User> findUserByEmailPassword(String email, String password) throws ServiceException;
 
-    Optional<User> findUserByEmail(String email) throws ServiceException;
+    Optional<User> findUserByEmail(String email);
 
     boolean save(User user) throws ServiceException;
 

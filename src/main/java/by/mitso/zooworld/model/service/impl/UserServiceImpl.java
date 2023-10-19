@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static by.mitso.zooworld.command.Message.*;
+
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userDao.findById(id);
 
         if (user.isEmpty()) {
-            throw new ServiceException("No user with id = " + id);
+            throw new ServiceException(NO_USER_WITH_ID + id);
         }
         return user;
     }
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
             return users;
         }
 
-        throw new ServiceException("No users found with first name = " + firstName);
+        throw new ServiceException(NO_USERS_WITH_FIRST_NAME + firstName);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
             return users;
         }
 
-        throw new ServiceException("No users found with last name = " + lastName);
+        throw new ServiceException(NO_USERS_WITH_LAST_NAME + lastName);
     }
 
     @Override
@@ -85,11 +87,11 @@ public class UserServiceImpl implements UserService {
             Optional<String> passwordFromDB = userDao.findPasswordByEmail(email);
 
             if (passwordFromDB.isEmpty()) {
-                throw new ServiceException("No registered user with email = " + email);
+                throw new ServiceException(NO_REGISTERED_USER_WITH_EMAIL + email);
             }
 
             if (!encodedPassword.equals(passwordFromDB.get())) {
-                throw new ServiceException("Wrong password");
+                throw new ServiceException(WRONG_PASSWORD);
             }
 
             user = userDao.findUserByEmail(email);
@@ -99,30 +101,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) throws ServiceException {
+    public Optional<User> findUserByEmail(String email) {
 
-        Optional<User> user = userDao.findUserByEmail(email);
-
-        if (user.isEmpty()) {
-            throw new ServiceException("No user with email = " + email);
-        }
-
-        return user;
+        return userDao.findUserByEmail(email);
     }
 
     @Override
     public boolean save(User user) throws ServiceException {
 
-        if (UserValidator.isValidEmail(user.getEmail()) &&
-            UserValidator.isValidName(user.getFirstName())&&
-            UserValidator.isValidPassword(user.getPassword())) {
+        if (UserValidator.isValidUser(user)) {
 
             String encodedPassword = Encoder.encodePassword(user.getPassword());
             user.setPassword(encodedPassword);
             return userDao.save(user);
         }
 
-       throw new ServiceException("Wrong user data");
+        throw new ServiceException(WRONG_USER_DATA);
     }
 
     @Override
@@ -131,7 +125,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userDao.findById(id);
 
         if (user.isEmpty()) {
-            throw new ServiceException("No user with id = " + id);
+            throw new ServiceException(NO_USER_WITH_ID + id);
         }
 
         return userDao.changeUserRole(id, role);
@@ -140,15 +134,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changePersonalInfo(User user) throws ServiceException {
 
-        if (UserValidator.isValidEmail(user.getEmail()) &&
-                UserValidator.isValidName(user.getFirstName())&&
-                UserValidator.isValidPassword(user.getPassword())) {
+        if (UserValidator.isValidUser(user)) {
 
             String encodedPassword = Encoder.encodePassword(user.getPassword());
             user.setPassword(encodedPassword);
             return userDao.changePersonalInfo(user);
         }
 
-        throw new ServiceException("Wrong user data");
+        throw new ServiceException(WRONG_USER_DATA);
     }
 }
