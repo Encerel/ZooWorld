@@ -14,6 +14,7 @@ import by.mitso.zooworld.model.service.impl.ProductServiceImpl;
 import by.mitso.zooworld.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.hibernate.Hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +37,16 @@ public class ToCartPageCommand implements Command {
         List<CartItem> cartItems = new ArrayList<>();
 
         try {
-            Optional<Cart> cart = cartService.findByUser(user);
+            Optional<Cart> optionalCart = cartService.findByUser(user);
 
-            if (cart.isPresent()) {
-                cartItems = cartService.findAllCartItems(cart.get());
+            if (optionalCart.isPresent()) {
+                Cart cart = optionalCart.get();
+
+                List<CartItem> testItems = cart.getItems();
+                cartItems = cartService.findAllCartItems(cart);
                 request.setAttribute(ParameterAndAttribute.CART_ITEMS, cartItems);
                 router.setPagePath(PagePath.CART);
-                request.setAttribute(ParameterAndAttribute.CURRENT_PAGE, PagePath.CART);
+                session.setAttribute(ParameterAndAttribute.CURRENT_PAGE, PagePath.CART);
                 if (cartItems.isEmpty()) {
                     request.setAttribute(ParameterAndAttribute.MESSAGE, Message.NOTHING_HERE);
                 }

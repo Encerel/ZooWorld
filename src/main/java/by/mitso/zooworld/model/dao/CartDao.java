@@ -17,8 +17,6 @@ public interface CartDao {
 
     Optional<Cart> findByUser(User user);
 
-
-
     boolean addProductToCart(Cart cart, CartItem item);
 
     boolean deleteCartItem(Cart cart, CartItem item);

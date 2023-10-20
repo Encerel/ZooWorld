@@ -2,14 +2,13 @@ package by.mitso.zooworld.model.dao.impl;
 
 import by.mitso.zooworld.entity.Cart;
 import by.mitso.zooworld.entity.CartItem;
-import by.mitso.zooworld.entity.Product;
 import by.mitso.zooworld.entity.User;
-import by.mitso.zooworld.exception.DaoException;
 import by.mitso.zooworld.model.connection.HibernateSessionFactoryProvider;
 import by.mitso.zooworld.model.dao.CartDao;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,20 +52,7 @@ public class CartDaoImpl implements CartDao {
         return cart;
     }
 
-    @Override
-    public List<CartItem> findAllCartItems(Cart cart) {
 
-        List<CartItem> cartItems = new ArrayList<>();
-
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
-
-            session.beginTransaction();
-            Cart cartFromDB = session.get(Cart.class, cart.getId());
-            cartItems = cartFromDB.getItems();
-            session.getTransaction().commit();
-        }
-        return cartItems;
-    }
 
     @Override
     public Optional<Cart> findByUser(User user){
