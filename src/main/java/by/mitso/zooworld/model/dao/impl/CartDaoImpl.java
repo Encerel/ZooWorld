@@ -5,11 +5,9 @@ import by.mitso.zooworld.entity.CartItem;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.model.connection.HibernateSessionFactoryProvider;
 import by.mitso.zooworld.model.dao.CartDao;
-import org.hibernate.Hibernate;
+import by.mitso.zooworld.model.dao.ColumnName;
 import org.hibernate.Session;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,9 +51,8 @@ public class CartDaoImpl implements CartDao {
     }
 
 
-
     @Override
-    public Optional<Cart> findByUser(User user){
+    public Optional<Cart> findByUser(User user) {
 
         Optional<Cart> cart = Optional.empty();
 
@@ -98,4 +95,47 @@ public class CartDaoImpl implements CartDao {
         }
 
     }
+
+    @Override
+    public boolean clear(Cart cart) {
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            for (CartItem cartItem : cart.getItems()) {
+                session.delete(cartItem);
+            }
+            session.getTransaction().commit();
+            return true;
+        }
+
+    }
+
+    @Override
+    public boolean clear(List<CartItem> items) {
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            for (CartItem cartItem : items) {
+                session.delete(cartItem);
+            }
+            session.getTransaction().commit();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean updateExistedCartItem(CartItem item) {
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+            session.update(item);
+            session.getTransaction().commit();
+        }
+        return true;
+    }
+
 }

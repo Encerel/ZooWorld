@@ -29,7 +29,7 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private int price;
+    private double price;
 
     @Column(name = "image")
     private String image;
@@ -68,10 +68,10 @@ public class Product {
         BIRDS,
         TURTLES
     }
-
     public enum Type {
         FOOD,
         TOY,
-        ACCESSORIES
+        ACCESSORIES;
+
     }
 }

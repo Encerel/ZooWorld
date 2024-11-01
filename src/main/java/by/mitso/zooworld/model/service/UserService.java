@@ -10,7 +10,7 @@ public interface UserService {
 
     List<User> findAll();
 
-    Optional<User> findById(long id) throws ServiceException;
+    Optional<User> findById(long id) ;
 
     List<User> findUsersByFirstName(String firstName) throws ServiceException;
 
@@ -22,10 +22,21 @@ public interface UserService {
 
     Optional<User> findUserByEmail(String email);
 
+    Optional<User> findUserByPhoneNumber(String phoneNumber);
+
+    Optional<User> findUserByEmailAndFirstName(String email, String lastName);
+    Optional<User> findUserByPhoneNumberAndLastName(String phoneNumber, String lastName);
+
+    List<User> findByAllParameters(String email, String phoneNumber, String lastName) throws ServiceException;
+
     boolean save(User user) throws ServiceException;
 
     boolean changeUserRole(long id, User.Role role) throws ServiceException;
 
     boolean changePersonalInfo(User user) throws ServiceException;
+
+    int findNumberOfPages();
+
+    List<User> findUsersFromRow(int pageNumber);
 
 }

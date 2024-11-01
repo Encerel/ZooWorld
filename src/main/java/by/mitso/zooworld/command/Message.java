@@ -20,6 +20,19 @@ public class Message {
     public static final String WRONG_PHONE_NUMBER_FORMAT = "Wrong phone number format";
     public static final Object NOTHING_HERE = "Nothing here";
 
+    public static final String NO_ORDER_WITH_ID = "No order with id = ";
+    public static final String NO_CART_WITH_ID = "No cart with id = ";
+
+    public static final String NO_PRODUCT_WITH_ID = "No product with id = ";
+    public static final String ORDER_SHOULD_CONTAINS_AT_LEAST_ONE_ITEM = "Order should contains at least one item";
+    public static final String USER_WITH_SUCH_PHONE_NUMBER_IS_ALREADY_EXIST = "User with such phone number is already exist";
+    public static final String NO_USERS_WITH_PHONE_NUMBER = "No users with phone number = ";
+    public static final String NO_USERS_WITH_EMAIL = "No users with email = ";
+    public static final String NO_USER_WITH_LAST_NAME = "No user with last name = ";
+
+    public static final String OR = " or ";
+    public static final Object NO_USER_WITH_SUCH_ID = "No user with such id!";
+
 
     private Message() {}
 }

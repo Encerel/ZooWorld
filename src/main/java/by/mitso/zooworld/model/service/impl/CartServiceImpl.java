@@ -13,6 +13,8 @@ import by.mitso.zooworld.model.service.UserService;
 import java.util.List;
 import java.util.Optional;
 
+import static by.mitso.zooworld.command.Message.*;
+
 public class CartServiceImpl implements CartService {
 
     private final CartDao cartDao;
@@ -45,14 +47,23 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartItem> findAllCartItems(Cart cart) {
-        return cartDao.findAllCartItems(cart);
-    }
-
-    @Override
     public boolean addProductToCart(Cart cart, CartItem item) {
         return cartDao.addProductToCart(cart, item);
     }
+
+    @Override
+    public boolean updateExistedCartItem(CartItem itemInCart, CartItem itemForAdd) {
+
+        CartItem cartItem = CartItem.builder()
+                .quantity(itemInCart.getQuantity() + itemForAdd.getQuantity())
+                .product(itemInCart.getProduct())
+                .cart(itemInCart.getCart())
+                .totalPrice(itemInCart.getTotalPrice() + itemForAdd.getTotalPrice())
+                .build();
+
+        return cartDao.updateExistedCartItem(cartItem);
+    }
+
 
     @Override
     public boolean deleteCartItem(Cart cart, CartItem item) throws ServiceException {
@@ -61,13 +72,23 @@ public class CartServiceImpl implements CartService {
         Optional<Product> productFromDB = productService.findById(item.getProduct().getId());
 
         if (cartFromDB.isEmpty()) {
-            throw new ServiceException("No cart with id = " + cart.getId());
+            throw new ServiceException(NO_CART_WITH_ID + cart.getId());
         }
 
         if (productFromDB.isEmpty()) {
-            throw new ServiceException("No product with id = " + item.getProduct().getId());
+            throw new ServiceException(NO_PRODUCT_WITH_ID + item.getProduct().getId());
         }
 
         return cartDao.deleteCartItem(cart, item);
+    }
+
+    @Override
+    public boolean clear(Cart cart) {
+        return cartDao.clear(cart);
+    }
+
+    @Override
+    public boolean clear(List<CartItem> items) {
+        return cartDao.clear(items);
     }
 }

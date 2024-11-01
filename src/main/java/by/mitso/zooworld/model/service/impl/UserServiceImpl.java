@@ -1,8 +1,10 @@
 package by.mitso.zooworld.model.service.impl;
 
+import by.mitso.zooworld.command.Message;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.entity.User.Role;
 import by.mitso.zooworld.exception.ServiceException;
+import by.mitso.zooworld.model.dao.ColumnName;
 import by.mitso.zooworld.model.dao.UserDao;
 import by.mitso.zooworld.model.service.UserService;
 import by.mitso.zooworld.util.Encoder;
@@ -16,7 +18,10 @@ import static by.mitso.zooworld.command.Message.*;
 
 public class UserServiceImpl implements UserService {
 
+
     private final UserDao userDao;
+
+    private final int numberOfUsersInPage = 9;
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
@@ -28,14 +33,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(long id) throws ServiceException {
-
-        Optional<User> user = userDao.findById(id);
-
-        if (user.isEmpty()) {
-            throw new ServiceException(NO_USER_WITH_ID + id);
-        }
-        return user;
+    public Optional<User> findById(long id)  {
+        return userDao.findById(id);
     }
 
     @Override
@@ -107,6 +106,81 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findUserByPhoneNumber(String phoneNumber) {
+        return userDao.findUserByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public Optional<User> findUserByEmailAndFirstName(String email, String firstName) {
+        return userDao.findByEmailAndLastName(email, firstName);
+    }
+
+    @Override
+    public Optional<User> findUserByPhoneNumberAndLastName(String phoneNumber, String lastName) {
+        return userDao.findByPhoneNumberAndLastName(phoneNumber, lastName);
+    }
+
+    @Override
+    public List<User> findByAllParameters(String email, String phoneNumber, String lastName) throws ServiceException {
+
+        if ((email == null || email.isBlank())
+                && (phoneNumber == null || phoneNumber.isBlank())
+                && !(lastName == null || lastName.isBlank())) {
+           return userDao.findUsersByLastName(lastName);
+        }
+
+        if (!(email == null || email.isBlank())
+                && (phoneNumber == null || phoneNumber.isBlank())
+                && (lastName == null || lastName.isBlank())) {
+            Optional<User> userByEmail = userDao.findUserByEmail(email);
+            if (userByEmail.isPresent()) {
+                return List.of(userByEmail.get());
+            } else {
+                throw new ServiceException(NO_REGISTERED_USER_WITH_EMAIL + email);
+            }
+        }
+
+        if ((email == null || email.isBlank())
+                && !(phoneNumber == null || phoneNumber.isBlank())
+                && (lastName == null || lastName.isBlank())) {
+            Optional<User> userByPhoneNumber = userDao.findByPhoneNumber(phoneNumber);
+            if (userByPhoneNumber.isPresent()) {
+                return List.of(userByPhoneNumber.get());
+            } else {
+                throw new ServiceException(NO_USERS_WITH_PHONE_NUMBER + phoneNumber);
+            }
+        }
+
+        if ((email == null || email.isBlank()) && !(phoneNumber == null || phoneNumber.isBlank())) {
+            Optional<User> userByPhoneNumberAndLastName = userDao.findByPhoneNumberAndLastName(phoneNumber, lastName);
+            if (userByPhoneNumberAndLastName.isPresent()) {
+                return List.of(userByPhoneNumberAndLastName.get());
+            } else {
+                throw new ServiceException(NO_USERS_WITH_PHONE_NUMBER + phoneNumber + OR + ColumnName.EMAIL + email);
+            }
+        }
+
+        if (!(email == null || email.isBlank()) && (phoneNumber == null || phoneNumber.isBlank())) {
+            Optional<User> userByEmailAndLastName = userDao.findByEmailAndLastName(email, lastName);
+            if (userByEmailAndLastName.isPresent()) {
+                return List.of(userByEmailAndLastName.get());
+            } else {
+                throw new ServiceException(NO_USERS_WITH_EMAIL + email + OR + NO_USER_WITH_LAST_NAME + lastName);
+            }
+        }
+
+        Optional<User> userByAllParameters = userDao.findByAllParameters(email, phoneNumber, lastName);
+
+
+        return List.of(userByAllParameters.orElseThrow(
+                () -> new ServiceException(
+                        NO_USERS_WITH_EMAIL + email + OR + NO_USERS_WITH_PHONE_NUMBER + phoneNumber + OR + NO_USERS_WITH_LAST_NAME + lastName
+                )
+        ));
+
+    }
+
+    @Override
     public boolean save(User user) throws ServiceException {
 
         if (UserValidator.isValidUser(user)) {
@@ -135,12 +209,42 @@ public class UserServiceImpl implements UserService {
     public boolean changePersonalInfo(User user) throws ServiceException {
 
         if (UserValidator.isValidUser(user)) {
-
-            String encodedPassword = Encoder.encodePassword(user.getPassword());
-            user.setPassword(encodedPassword);
+            String passwordInDB = userDao.findPasswordByEmail(user.getEmail()).get();
+            if (!passwordInDB.equals(user.getPassword())) {
+                String encodedPassword = Encoder.encodePassword(user.getPassword());
+                user.setPassword(encodedPassword);
+            }
             return userDao.changePersonalInfo(user);
         }
 
         throw new ServiceException(WRONG_USER_DATA);
+    }
+
+    @Override
+    public int findNumberOfPages() {
+        int numberOfPages;
+        long numberOfUser;
+            numberOfUser = userDao.findNumberOfRows();
+            if (numberOfUser > numberOfUsersInPage) {
+                numberOfPages = (int) Math.ceil((double) numberOfUser / numberOfUsersInPage);
+            } else {
+                numberOfPages = 1;
+            }
+
+        return numberOfPages;
+    }
+
+    @Override
+    public List<User> findUsersFromRow(int pageNumber) {
+        List<User> users = new ArrayList<>();
+        int fromRow;
+        if (pageNumber > 1) {
+            fromRow = (pageNumber - 1) * numberOfUsersInPage;
+        } else {
+            fromRow = 0;
+        }
+            users = userDao.findUsersFromRow(fromRow, numberOfUsersInPage);
+
+        return users;
     }
 }

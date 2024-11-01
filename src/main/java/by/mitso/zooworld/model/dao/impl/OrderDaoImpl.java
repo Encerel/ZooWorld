@@ -1,10 +1,12 @@
 package by.mitso.zooworld.model.dao.impl;
 
 import by.mitso.zooworld.entity.Order;
+import by.mitso.zooworld.entity.OrderItem;
 import by.mitso.zooworld.entity.User;
-import by.mitso.zooworld.exception.DaoException;
 import by.mitso.zooworld.model.connection.HibernateSessionFactoryProvider;
+import by.mitso.zooworld.model.dao.ColumnName;
 import by.mitso.zooworld.model.dao.OrderDao;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static by.mitso.zooworld.model.dao.ColumnName.ORDER_ID;
+import static by.mitso.zooworld.model.dao.ColumnName.ORDER_STATUS;
 
 public class OrderDaoImpl implements OrderDao {
 
@@ -63,7 +66,22 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean changeOrderStatus(long id, Order.OrderStatus status){
+    public boolean save(Order order) {
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.save(order);
+            for (OrderItem item : order.getItems()) {
+                item.setOrder(order);
+                session.save(item);
+            }
+            session.getTransaction().commit();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean changeOrderStatus(long id, Order.OrderStatus status) {
 
         try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
 
@@ -74,5 +92,48 @@ public class OrderDaoImpl implements OrderDao {
             return true;
 
         }
+    }
+
+    @Override
+    public List<OrderItem> findOrderItemsByOrder(Order order) {
+
+        List<OrderItem> items = new ArrayList<>();
+
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            items = session.createQuery("FROM OrderItem WHERE order = :id", OrderItem.class)
+                    .setParameter(ORDER_ID, order)
+                    .list();
+
+            session.getTransaction().commit();
+
+        }
+        return items;
+    }
+
+    @Override
+    public List<Order> findByStatus(Order.OrderStatus status) {
+
+        List<Order> items = new ArrayList<>();
+
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            items = session.createQuery("FROM Order o WHERE o.status = :status", Order.class)
+                    .setParameter(ORDER_STATUS, status)
+                    .list();
+
+            for (Order order : items) {
+                Hibernate.initialize(order.getOwner());
+            }
+            session.getTransaction().commit();
+
+        }
+        return items;
     }
 }

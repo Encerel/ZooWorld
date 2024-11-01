@@ -25,6 +25,7 @@ public final class ColumnName {
 
     public static final String CART_ID = "id";
     public static final String CART_ITEM_ID = "id";
+    public static final String PHONE_NUMBER = "phone_number";
 
     private ColumnName() {}
 }

@@ -36,14 +36,18 @@ public class ToCartPageCommand implements Command {
         User user = (User) session.getAttribute(ParameterAndAttribute.USER);
         List<CartItem> cartItems = new ArrayList<>();
 
+        if (user == null) {
+            router.setPagePath(PagePath.TO_SIGN_IN_PAGE);
+            return router;
+        }
+
         try {
             Optional<Cart> optionalCart = cartService.findByUser(user);
 
             if (optionalCart.isPresent()) {
                 Cart cart = optionalCart.get();
 
-                List<CartItem> testItems = cart.getItems();
-                cartItems = cartService.findAllCartItems(cart);
+                cartItems = cart.getItems();
                 request.setAttribute(ParameterAndAttribute.CART_ITEMS, cartItems);
                 router.setPagePath(PagePath.CART);
                 session.setAttribute(ParameterAndAttribute.CURRENT_PAGE, PagePath.CART);
@@ -59,4 +63,6 @@ public class ToCartPageCommand implements Command {
 
         return router;
     }
+
+
 }

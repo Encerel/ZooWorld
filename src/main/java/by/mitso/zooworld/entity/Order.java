@@ -28,6 +28,9 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User owner;
 
+    @Column(name = "total_price")
+    private double totalPrice;
+
     @Column(name = "ordered_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderAt;

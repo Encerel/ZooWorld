@@ -1,0 +1,66 @@
+.quantity-field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px; 
+    height: 40px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .quantity-field .value-button{ 
+    border: 1px solid #FE9015;
+    margin: 0px;
+    width: 40px;
+    height: 100%;   
+    padding: 0;
+    background: #FE9015;
+    outline: none;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .quantity-field .value-button:hover {
+    background: #eb820b;
+  }
+  
+  .quantity-field .value-button:active{
+    background: #d47405;
+  }
+  
+  .quantity-field .decrease-button {
+    margin-right: -4px;
+    border-radius: 8px 0 0 8px;
+  }
+  
+  .quantity-field .increase-button {
+    margin-left: -4px;
+    border-radius: 0 8px 8px 0;
+  }
+   
+  .quantity-field .number{
+    display: inline-block;
+    text-align: center;
+    border: none;
+    border-top: 1px solid #FE9015;
+    border-bottom: 1px solid #FE9015;
+    margin: 0px;
+    width: 40px;
+    height: 100%;
+    line-height: 40px;
+    font-size: 11pt;
+    box-sizing: border-box; 
+    background: white;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .quantity-field .number::selection{
+    background: none;
+  }
+
+  /*
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+  */

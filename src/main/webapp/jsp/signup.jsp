@@ -1,45 +1,48 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Sign up</title>
-</head>
-<body>
-<h1>Sign up</h1>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Регистрация</title>
-</head>
-<body>
-<h2>Регистрация</h2>
-<form action="controller" method="post">
-    <label for="firstName">Имя:</label>
-    <input type="text" id="firstName" name="first_name" required><br><br>
-
-    <label for="lastName">Фамилия:</label>
-    <input type="text" id="lastName" name="last_name" required><br><br>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br><br>
+<c:import url="../components/header.jsp"/>
 
 
-    <label for="password">Пароль:</label>
-    <input type="password" id="password" name="password" required><br><br>
+<main class="main">
+    <div class="main__container">
+        <div class="sign__wrapper">
+            <h1>Регистрация</h1>
+            <form class="sign__form" action="controller" method="post">
+                <label>
+                    Имя:<br>
+                    <input type="text" name="first_name" placeholder="Имя">
+                </label>
+                <label>
+                    Фамилия:<br>
+                    <input type="text" name="last_name" placeholder="Фамилия">
+                </label>
+                <label>
+                    Email:<br>
+                    <input type="email" name="email" placeholder="Email">
+                </label>
+                <label>
+                    Номер телефона:<br>
+                    <input type="tel" name="phone" placeholder="Номер телефона">
+                </label>
+                <label>
+                    Пароль:<br>
+                    <input type="password" name="password" placeholder="Password">
+                </label>
+                <label>
+                    Подтвердите пароль:<br>
+                    <input type="password" name="confirmed_password" placeholder="Подтвердите пароль">
+                </label>
+                <button class="add-to-cart" type="submit">Войти</button>
+                <input type="hidden" name="command" value="sign_up">
+            </form>
+            ${message}
+        </div>
+    </div>
+</main>
 
-    <label for="confirmed_password">Подтвердите пароль:</label>
-    <input type="password" id="confirmed_password" name="confirmed_password" required><br><br>
-
-    <label for="phoneNumber">Номер телефона:</label>
-    <input type="text" id="phoneNumber" name="phone"><br><br>
 
 
-    <input type="submit" value="Зарегистрироваться">
-    <input type="hidden" name="command" value="sign_up">
-</form>
-${message}
-</body>
-</html>
 
-</body>
-</html>
+
+<c:import url="../components/footer.jsp"/>

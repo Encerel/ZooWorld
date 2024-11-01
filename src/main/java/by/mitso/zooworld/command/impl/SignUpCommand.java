@@ -34,9 +34,17 @@ public class SignUpCommand implements Command {
 
         if (password.equals(confirmedPassword)) {
 
-            Optional<User> userFromDB = userService.findUserByEmail(email);
+            Optional<User> userByEmail = userService.findUserByEmail(email);
+            Optional<User> userByPhoneNumber = userService.findUserByPhoneNumber(phone);
 
-            if (userFromDB.isEmpty()) {
+            if (userByPhoneNumber.isPresent()) {
+                router.setPagePath(PagePath.TO_SIGN_UP_PAGE);
+                router.setType(Router.Type.REDIRECT);
+                request.setAttribute(ParameterAndAttribute.MESSAGE, Message.USER_WITH_SUCH_PHONE_NUMBER_IS_ALREADY_EXIST);
+                return router;
+            }
+
+            if (userByEmail.isEmpty()) {
                 User user = User.builder()
                         .firstName(firstName)
                         .lastName(lastName)

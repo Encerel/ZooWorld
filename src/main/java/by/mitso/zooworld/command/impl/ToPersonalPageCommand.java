@@ -8,12 +8,15 @@ import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.model.dao.impl.UserDaoImpl;
 import by.mitso.zooworld.model.service.UserService;
 import by.mitso.zooworld.model.service.impl.UserServiceImpl;
+import by.mitso.zooworld.util.Encoder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
 public class ToPersonalPageCommand implements Command {
+
+    private final UserService userService = new UserServiceImpl(new UserDaoImpl());
 
     @Override
     public Router execute(HttpServletRequest request) {
@@ -23,6 +26,9 @@ public class ToPersonalPageCommand implements Command {
         if (user != null) {
             switch (user.getRole()) {
                 case ADMIN:
+                    int countPagesForUsers = userService.findNumberOfPages();
+                    request.setAttribute(ParameterAndAttribute.USERS, userService.findUsersFromRow(countPagesForUsers));
+                        session.setAttribute(ParameterAndAttribute.NUMBER_OF_PAGES, countPagesForUsers);
                     session.setAttribute(ParameterAndAttribute.CURRENT_PAGE, PagePath.TO_PERSONAL_PAGE);
                     router.setPagePath(PagePath.ADMIN);
                     break;

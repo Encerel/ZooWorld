@@ -4,7 +4,6 @@ import by.mitso.zooworld.entity.Product;
 import by.mitso.zooworld.entity.Product.Type;
 import by.mitso.zooworld.entity.Product.Category;
 import by.mitso.zooworld.entity.Product.Availability;
-import by.mitso.zooworld.exception.DaoException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,7 @@ public interface ProductDao {
 
     Optional<Product> findById(long id);
 
-    Optional<Product> findByName(String name);
+    List<Product> findByName(String name);
 
     boolean changeAvailability(long id, Availability availability);
 
@@ -23,4 +22,11 @@ public interface ProductDao {
     List<Product> findByType(Type type);
     List<Product> findByCategory(Category category);
 
+    abstract List<Product> findUsersFromRow(int fromRow, int numberOfProductsInPage);
+
+    long findNumberOfRows();
+
+    List<Product> findBestSalesProducts();
+
+    List<Product> findSimilarProducts(Product product);
 }

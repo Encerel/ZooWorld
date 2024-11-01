@@ -31,16 +31,14 @@ public class Controller extends HttpServlet {
         Router router = currentCommand.execute(request);
 
         switch (router.getType()) {
-            case FORWARD: {
+            case FORWARD -> {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(router.getPagePath());
                 requestDispatcher.forward(request, response);
-                break;
             }
-            case REDIRECT: {
+            case REDIRECT -> {
                 response.sendRedirect(router.getPagePath());
-                break;
             }
-            default: {
+            default -> {
                 response.sendRedirect(PagePath.SIGN_IN);
             }
         }

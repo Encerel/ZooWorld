@@ -7,10 +7,12 @@ import by.mitso.zooworld.command.Router;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.UnsupportedEncodingException;
+
 public class ToSignInCommand implements Command {
 
     @Override
-    public Router execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request)  {
         Router router = new Router();
         HttpSession session = request.getSession();
         session.setAttribute(ParameterAndAttribute.CURRENT_PAGE, PagePath.TO_SIGN_IN_PAGE);

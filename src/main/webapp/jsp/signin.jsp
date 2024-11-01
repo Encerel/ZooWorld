@@ -1,32 +1,30 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Форма входа</title>
-</head>
-<body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<h2>Вход</h2>
 
-<form action="controller" method="post">
-    <label for="username">Email:</label><br>
-    <input type="text" id="username" name="email" required><br><br>
+<c:import url="../components/header.jsp"/>
 
-    <label for="password">Пароль:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
+<main class="main">
+    <div class="main__container">
+        <div class="sign__wrapper">
+            <h1>Вход</h1>
+            <form class="sign__form" action="controller" method="post">
+                <label>
+                    Email:<br>
+                    <input type="email" name="email" placeholder="Email">
+                </label>
+                <label>
+                    Password:<br>
+                    <input type="password" name="password" placeholder="Password">
+                </label>
+                <button class="add-to-cart" type="submit">Войти</button>
+                    <input type="hidden" name="command" value="log_in">
+                <a href="controller?command=to_sign_up" class="user__signin">Нет аккаунта?</a>
+            </form>
+            <p>${message}</p>
+        </div>
+    </div>
+</main>
 
-    <input type="submit" value="Войти">
-    <p>${message}</p>
-    <input type="hidden" name="command" value="log_in">
-</form>
+<c:import url="../components/footer.jsp"/>
 
-</body>
-</html>
-
-</body>
-</html>

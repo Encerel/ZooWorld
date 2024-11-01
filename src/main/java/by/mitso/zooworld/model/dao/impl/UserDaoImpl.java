@@ -4,9 +4,11 @@ import by.mitso.zooworld.entity.Cart;
 import by.mitso.zooworld.entity.User;
 import by.mitso.zooworld.entity.User.Role;
 import by.mitso.zooworld.model.connection.HibernateSessionFactoryProvider;
+import by.mitso.zooworld.model.dao.ColumnName;
 import by.mitso.zooworld.model.dao.UserDao;
 import org.hibernate.Session;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +37,7 @@ public class UserDaoImpl implements UserDao {
 
         Optional<User> user = Optional.empty();
 
-        try(Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
 
             session.beginTransaction();
 
@@ -56,8 +58,8 @@ public class UserDaoImpl implements UserDao {
         try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
-            users = session.createQuery("FROM User u WHERE u.firstName = :first_name", User.class)
-                    .setParameter(FIRST_NAME, firstName)
+            users = session.createQuery("FROM User u WHERE u.firstName like :first_name%", User.class)
+                    .setParameter(FIRST_NAME, "%" + firstName + "%")
                     .list();
 
             session.getTransaction().commit();
@@ -73,13 +75,31 @@ public class UserDaoImpl implements UserDao {
         try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
             session.beginTransaction();
 
-            users = session.createQuery("FROM User u WHERE u.lastName = :last_name", User.class)
-                    .setParameter(LAST_NAME, lastName)
+            users = session.createQuery("FROM User u WHERE u.lastName like :last_name", User.class)
+                    .setParameter(LAST_NAME, "%" + lastName + "%")
                     .list();
 
             session.getTransaction().commit();
         }
         return users;
+    }
+
+    @Override
+    public Optional<User> findUserByPhoneNumber(String phoneNumber) {
+
+        Optional<User> user = Optional.empty();
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+
+            user = session.createQuery("FROM User u WHERE u.phoneNumber = :phone_number", User.class)
+                            .setParameter(ColumnName.PHONE_NUMBER, phoneNumber)
+                                    .uniqueResultOptional();
+
+            session.getTransaction().commit();
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -96,6 +116,22 @@ public class UserDaoImpl implements UserDao {
             session.getTransaction().commit();
         }
         return users;
+    }
+
+    @Override
+    public Optional<User> findByPhoneNumber(String phoneNumber) {
+        Optional<User> user = Optional.empty();
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            user = session.createQuery("FROM User u WHERE u.phoneNumber = :phone_number", User.class)
+                    .setParameter(PHONE_NUMBER, phoneNumber)
+                    .uniqueResultOptional();
+
+            session.getTransaction().commit();
+        }
+        return user;
     }
 
     @Override
@@ -173,5 +209,103 @@ public class UserDaoImpl implements UserDao {
             session.getTransaction().commit();
             return true;
         }
+    }
+
+    @Override
+    public long findNumberOfRows() {
+        Long numberOfRows = 0l;
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+
+            session.beginTransaction();
+            numberOfRows = (Long) session.createQuery("SELECT count (u.id) FROM User u").uniqueResult();
+            session.getTransaction().commit();
+
+        }
+        return numberOfRows;
+    }
+
+    @Override
+    public List<User> findUsersFromRow(int fromRow, int numberOfUsersInPage) {
+        List<User> users = new ArrayList<User>();
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            users = session.createQuery("FROM User", User.class)
+                    .setFirstResult(fromRow)
+                    .setMaxResults(numberOfUsersInPage)
+                    .list();
+            session.getTransaction().commit();
+
+        }
+        return users;
+    }
+
+    @Override
+    public Optional<User> findByEmailAndLastName(String email, String lastName) {
+        Optional<User> user = Optional.empty();
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            user = session.createQuery("FROM User u WHERE u.email = :email AND u.lastName = :last_name", User.class)
+                    .setParameter(EMAIL, email)
+                    .setParameter(LAST_NAME, lastName)
+                    .uniqueResultOptional();
+
+            session.getTransaction().commit();
+        }
+        return user;
+    }
+
+    @Override
+    public Optional<User> findByPhoneNumberAndLastName(String phoneNumber, String lastName) {
+        Optional<User> user = Optional.empty();
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            user = session.createQuery("FROM User u WHERE u.phoneNumber = :phone_number AND u.lastName = :last_name", User.class)
+                    .setParameter(PHONE_NUMBER, phoneNumber)
+                    .setParameter(LAST_NAME, lastName)
+                    .uniqueResultOptional();
+
+            session.getTransaction().commit();
+        }
+        return user;
+    }
+
+    @Override
+    public Optional<User> findByPhoneNumberAndEmail(String phoneNumber, String email) {
+        Optional<User> user = Optional.empty();
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            user = session.createQuery("FROM User u WHERE u.phoneNumber = :phone_number AND u.email = :email", User.class)
+                    .setParameter(PHONE_NUMBER, phoneNumber)
+                    .setParameter(EMAIL, email)
+                    .uniqueResultOptional();
+
+            session.getTransaction().commit();
+        }
+        return user;
+    }
+
+    @Override
+    public Optional<User> findByAllParameters(String email, String phoneNumber, String lastName) {
+        Optional<User> user = Optional.empty();
+
+        try (Session session = HibernateSessionFactoryProvider.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            user = session.createQuery("FROM User u WHERE u.phoneNumber = :phone_number AND u.email = :email AND u.lastName = :last_name", User.class)
+                    .setParameter(PHONE_NUMBER, phoneNumber)
+                    .setParameter(EMAIL, email)
+                    .setParameter(LAST_NAME, lastName)
+                    .uniqueResultOptional();
+
+            session.getTransaction().commit();
+        }
+        return user;
     }
 }
